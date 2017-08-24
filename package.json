@@ -1,0 +1,29 @@
+{
+  "name": "giom-weather-station",
+  "version": "1.0.0",
+  "description": "Small VUE.JS app consuming weather station data",
+  "main": "index.html",
+  "dependencies": {
+    "vue-cli": "^2.8.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhoralek/giom-weather-station.git"
+  },
+  "keywords": [
+    "VUE.JS",
+    "GIOM",
+    "Weather",
+    "station"
+  ],
+  "author": "horalek.jiri@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jhoralek/giom-weather-station/issues"
+  },
+  "homepage": "https://github.com/jhoralek/giom-weather-station#readme"
+}
