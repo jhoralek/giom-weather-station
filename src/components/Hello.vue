@@ -17,6 +17,20 @@
       <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul>
+    <h2>Names</h2>
+    <ul>
+      <li v-for="user in users" v-bind:key="user">
+        {{ user.firstName }} {{ user.lastName }}
+      </li>
+    </ul>    
+    <div>
+      <input type="text" v-model="twoWay" />
+      <span>{{ twoWay }}</span>
+      <span v-text="twoWay"></span>
+    </div>
+    <div>
+      <button class="btn btn-warning" v-on:click="counter++">Clicked {{ counter }}</button>
+    </div>
   </div>
 </template>
 
@@ -25,7 +39,14 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      users: [
+        { firstName: 'Sebastian', lastName: 'Echsweild' },
+        { firstName: 'Jiri', lastName: 'Horalek' },
+        { firstName: 'Katerina', lastName: 'Horalkova' }
+      ],
+      twoWay: '',
+      counter: 0
     }
   }
 }
