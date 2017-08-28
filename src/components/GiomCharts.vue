@@ -1,14 +1,14 @@
 <<template>
   <div class="giom__charts_wrapper">
       <h1>GIOM 3000 Weather info</h1>
-      <div class="boxes">
-        <div class="box">
+      <ul class="boxes">
+        <li class="box">
             <line-chart chart-name="Current day temperature" data-type-name="temperature" :chart-labels="labels" :chart-data="mdata"></line-chart>
-        </div>
-        <div class="box">
+        </li>
+        <li class="box">
             <line-chart chart-name="Day humidity" data-type-name="Relative humidity" :chart-labels="labels" :chart-data="humidity"></line-chart>
-        </div>
-      </div> 
+        </li>
+      </ul> 
   </div>
 </template>
 
@@ -63,17 +63,25 @@ export default {
 }
 </script>
 
-<style scoped>
-.boxes {
-    width: 100%;
-    height: 100%;
+<style>
+
+body {
+  background-color: #333333;
+}
+
+h1 {
+  color: #ffffff;
+}
+
+.boxes {  
+  list-style-type: none;
 }
 
 .box {
-    float: left;
+  display: inline-block;
     margin-left: 25px;    
     margin-right: 25px;
-    width: 40%;
-    height: 40%;     
+    width: 35%;
+    height: 35%;
 }
 </style>
