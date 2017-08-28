@@ -6,7 +6,7 @@
             <line-chart chart-name="Current day temperature" data-type-name="temperature" :chart-labels="labels" :chart-data="mdata"></line-chart>
         </li>
         <li class="box">
-            <line-chart chart-name="Day humidity" data-type-name="Relative humidity" :chart-labels="labels" :chart-data="humidity"></line-chart>
+           <line-chart chart-name="Day humidity" data-type-name="Relative humidity" :chart-labels="labels" :chart-data="humidity"></line-chart>
         </li>
       </ul> 
   </div>
@@ -14,19 +14,23 @@
 
 <script>
 import LineChart from './LineChart'
+import BarChart from './BarChart'
 import axios from 'axios'
 
 export default {
   name: 'giomCharts',
   components: {
-    'lineChart': LineChart
+    'lineChart': LineChart,
+    'barChart': BarChart
   },
   data () {
     return {
       labels: [],
       mdata: [],
       humidity: [],
-      timer: ''
+      timer: '',
+      barData: [],
+      barLabels: []
     }
   },
   mounted () {
