@@ -28,7 +28,14 @@ export default Line.extend({
          responsive: true,
          title: {
            display: true,
-           text: this.chartName
+           text: this.chartName,
+           fontColor: '#ffffff'
+         },
+         legend: {
+           display: true,
+           labels: {
+             fontColor: '#ffffff'
+           }
          },
          tooltips: {
            mode: 'index',
@@ -43,14 +50,22 @@ export default Line.extend({
              display: true,
              scaleLabel: {
                display: true,
-               labelString: 'Month'
+               labelString: 'Time',
+               fontColor: '#ffffff'
+             },
+             ticks: {
+               fontColor: '#ffffff'
              }
            }],
            yAxes: [{
              display: true,
              scaleLabel: {
                display: true,
-               labelString: 'Value'
+               labelString: 'Value',
+               fontColor: '#ffffff'
+             },
+             ticks: {
+               fontColor: '#ffffff'
              }
            }]
          }
@@ -71,10 +86,10 @@ export default Line.extend({
          labels: this.chartLabels,
          datasets: [{
            label: this.dataTypeName,
-           borderColor: '#249EBF',
-           pointBackgroundColor: 'white',
+           borderColor: '#E5E164',
+           pointBackgroundColor: '#333333',
            borderwidth: 0,
-           pointBordercolor: '#249EBF',
+           pointBordercolor: '#E5E164',
            backgroundColor: 'transparent',
            data: this.chartData
          }]
