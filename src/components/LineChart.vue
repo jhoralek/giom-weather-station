@@ -30,6 +30,7 @@ export default Line.extend({
      return {
        options: {
          responsive: true,
+         maintainAspectRatio: false,
          title: {
            display: true,
            text: this.chartName,
@@ -98,7 +99,7 @@ export default Line.extend({
            pointBackgroundColor: '#333333',
            borderwidth: 0,
            pointBordercolor: '#E5E164',
-           backgroundColor: 'transparent',
+           backgroundColor: '#E5E164',
            data: this.chartData
          }]
        }, this.options)

@@ -6,7 +6,6 @@
             <line-chart chart-name="Denní teplota" yLabel="Teplota" xLabel="Čas" :chart-labels="labels" :chart-data="mdata"></line-chart>
         </li>
         <li class="box">
-            <!-- <line-chart chart-name="Day humidity" data-type-name="Relative humidity" :chart-labels="labels" :chart-data="humidity"></line-chart> -->
             <bar-chart chart-name="Průměrná měsíční teplota" yLabel="Teplota" xLabel="Měsíce" :chart-labels="avgLabels" :chart-data="avgData"></bar-chart>
         </li>
       </ul> 
