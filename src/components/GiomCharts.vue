@@ -59,7 +59,7 @@ export default {
         })
 
       // get average data for this months
-      let months = [6, 7, 8, 9]
+      let months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
       axios.get('http://185.75.136.145:8888/?/months-avg-temp/' + months.join())
        .then(response => {
          this.avgLabels = months.map(month => {

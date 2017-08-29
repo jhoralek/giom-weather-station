@@ -1,6 +1,9 @@
 
 <script>
  import { Line } from 'vue-chartjs'
+ import { Chart } from 'chart.js'
+
+ const color = Chart.helpers.color
 
 export default Line.extend({
    name: 'lineChart',
@@ -30,7 +33,6 @@ export default Line.extend({
      return {
        options: {
          responsive: true,
-         maintainAspectRatio: false,
          title: {
            display: true,
            text: this.chartName,
@@ -71,8 +73,8 @@ export default Line.extend({
              },
              ticks: {
                fontColor: '#ffffff',
-               min: -20,
-               max: 40,
+               min: 0,
+               max: 35,
                stepSize: 5,
                callback: function (value) { return value + ' C°' }
              }
@@ -99,7 +101,7 @@ export default Line.extend({
            pointBackgroundColor: '#333333',
            borderwidth: 0,
            pointBordercolor: '#E5E164',
-           backgroundColor: '#E5E164',
+           backgroundColor: color('#E5E164').alpha(0.3).rgbString(),
            data: this.chartData
          }]
        }, this.options)
