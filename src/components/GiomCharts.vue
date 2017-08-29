@@ -1,6 +1,7 @@
 <<template>
   <div class="giom__charts_wrapper">
-      <h1>GIOM 3000 Weather info</h1>
+      <h1>GIOM 3000 meteostanice</h1>
+      <h3>Stanoviště Bolinka u Vlašimi</h3>
       <ul class="boxes">
         <li class="box">
             <line-chart chart-name="Denní teplota" yLabel="Teplota" xLabel="Čas" :chart-labels="labels" :chart-data="mdata"></line-chart>
@@ -92,6 +93,10 @@ body {
 }
 
 h1 {
+  color: #ffffff;
+}
+
+h3 {
   color: #ffffff;
 }
 
