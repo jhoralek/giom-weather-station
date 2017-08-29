@@ -1,5 +1,8 @@
 <script>
 import { Bar } from 'vue-chartjs'
+import { Chart } from 'chart.js'
+
+const color = Chart.helpers.color
 
 export default Bar.extend({
   name: 'barChart',
@@ -8,7 +11,11 @@ export default Bar.extend({
       type: String,
       default: ''
     },
-    dataTypeName: {
+    yLabel: {
+      type: String,
+      default: ''
+    },
+    xLabel: {
       type: String,
       default: ''
     },
@@ -24,10 +31,38 @@ export default Bar.extend({
   data () {
     return {
       options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              max: 30,
+              callback: function (value) { return value + ' C°' },
+              fontColor: '#ffffff'
+            },
+            scaleLabel: {
+              display: true,
+              fontColor: '#ffffff',
+              labelString: this.yLabel
+            }
+          }],
+          xAxes: [{
+            ticks: {
+              fontColor: '#ffffff'
+            },
+            scaleLabel: {
+              display: true,
+              fontColor: '#ffffff',
+              labelString: this.xLabel
+            },
+            barPercentage: 1
+          }]
+        },
         responsive: true,
         legend: {
           display: true,
-          fontColor: '#ffffff'
+          labels: {
+            fontColor: '#ffffff'
+          }
         },
         title: {
           display: true,
@@ -50,7 +85,10 @@ export default Bar.extend({
       this.renderChart({
         labels: this.chartLabels,
         datasets: [{
-          label: this.dataTypeName,
+          backgroundColor: color('#BAFFC9').alpha(0.3).rgbString(),
+          borderColor: '#BAFFC9',
+          borderWidth: 1,
+          label: this.yLabel,
           data: this.chartData
         }]
       }, this.options)

@@ -9,7 +9,11 @@ export default Line.extend({
        type: String,
        default: ''
      },
-     dataTypeName: {
+     yLabel: {
+       type: String,
+       default: ''
+     },
+     xLabel: {
        type: String,
        default: ''
      },
@@ -51,7 +55,7 @@ export default Line.extend({
              display: true,
              scaleLabel: {
                display: true,
-               labelString: 'Time',
+               labelString: this.xLabel,
                fontColor: '#ffffff'
              },
              ticks: {
@@ -62,11 +66,15 @@ export default Line.extend({
              display: true,
              scaleLabel: {
                display: true,
-               labelString: 'Value',
+               labelString: this.yLabel,
                fontColor: '#ffffff'
              },
              ticks: {
-               fontColor: '#ffffff'
+               fontColor: '#ffffff',
+               min: -20,
+               max: 40,
+               stepSize: 5,
+               callback: function (value) { return value + ' C°' }
              }
            }]
          }
@@ -86,7 +94,7 @@ export default Line.extend({
        this.renderChart({
          labels: this.chartLabels,
          datasets: [{
-           label: this.dataTypeName,
+           label: this.yLabel,
            borderColor: '#E5E164',
            pointBackgroundColor: '#333333',
            borderwidth: 0,

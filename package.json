@@ -16,9 +16,11 @@
   "dependencies": {
     "axios": "^0.16.2",
     "chart.js": "^2.6.0",
+    "moment": "^2.18.1",
     "net-snmp": "^1.2.0",
     "vue": "^2.3.3",
     "vue-chartjs": "^2.8.2",
+    "vue-momentjs": "^0.1.1",
     "vue-router": "^2.6.0",
     "vuex": "^2.3.1"
   },
