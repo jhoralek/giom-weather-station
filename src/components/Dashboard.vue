@@ -2,17 +2,24 @@
     <div class="container">
         <div class="tile is-ancestor">
             <div class="tile">
-              <article class="tile is-child box is-8">
+              <article class="tile is-child box is-11">
                   <p class="title">Denní teplota</p>
                   <p class="subtitle">Teplotní křivka vývoje teploty po půl hodině</p>
-                  <line-chart :ysettings="dayTempSettings"></line-chart>
+                  <line-chart :settings="dayTempSettings"></line-chart>
               </article>
             </div>
             <div class="tile">
-              <article class="tile is-child box is-8">
+              <article class="tile is-child box is-11">
                 <p class="title">Průměrná teplota</p>
                 <p class="subtitle">Průměrná měsíční teplota za celý rok</p>
                 <bar-chart :settings="monthAvgSettings"></bar-chart>
+              </article>
+            </div>
+            <div class="tile">
+              <article class="tile is-child box is-11">
+                  <p class="title">Min, Max, Průměr</p>
+                  <p class="subtitle">Minimální, maximální a průměrná denní teplota za měsíc</p>
+                  <multiline-chart :settings="minMaxAvgSettings"></multiline-chart>
               </article>
             </div>
         </div>
@@ -22,6 +29,7 @@
 <script>
 import LineChart from './LineChart'
 import BarChart from './BarChart'
+import MultilineChart from './MultiLineChart'
 
 import axios from 'axios'
 import { Chart } from 'chart.js'
@@ -29,22 +37,27 @@ import { Chart } from 'chart.js'
 const color = Chart.helpers.color
 const lineColor = '#98ddde'
 const barColor = '#f7786b'
+const maxMinAvgXaxesKey = 'day'
 
 export default {
   components: {
     'lineChart': LineChart,
-    'barChart': BarChart
+    'barChart': BarChart,
+    'multilineChart': MultilineChart
   },
   data () {
     return {
       timer: '',
       dayTempSettings: this.initSettings(lineColor),
-      monthAvgSettings: this.initSettings(barColor)
+      monthAvgSettings: this.initSettings(barColor),
+      minMaxAvgSettings: this.initMultiline([], '')
     }
   },
   created () {
     this.dayTemperatureData()
     this.monthAvgTemperatureData()
+    this.maxMinAvgTemperatureData()
+
     this.timer = setInterval(this.requestData, 240000)
   },
   beforeDestroy () {
@@ -52,6 +65,12 @@ export default {
   },
 
   methods: {
+    maxMinAvgTemperatureData () {
+      axios.get('http://185.75.136.145:8888/?/max-temperature/8')
+      .then(response => {
+        this.minMaxAvgSettings = this.initMultiline(response.data, maxMinAvgXaxesKey)
+      })
+    },
     /**
      * Get temperature of current day
      *
@@ -112,6 +131,59 @@ export default {
         labels: [],
         data: [],
         callback: function (value) { return value + ' C°' }
+      }
+    },
+
+    initMultiline (dataObj, xAxesKey) {
+      const fontColor = '#000000'
+
+      const tick = {
+        fontColor: fontColor,
+        min: -20,
+        max: 40,
+        stepSize: 5,
+        callback: function (value) { return value + ' C°' }
+      }
+
+      const yAxes = [{
+        display: true,
+        scaleLabel: {
+          type: 'linear',
+          display: true,
+          fontColor: fontColor
+        },
+        ticks: tick
+      }]
+
+      if (dataObj.length > 0) {
+        const datasets = []
+        const firstRow = dataObj[0]
+        const colors = ['#ca535c', '#6A5A7F', '#6F5E55']
+        Object.keys(firstRow).forEach(function (key, index) {
+          if (key !== xAxesKey) {
+            datasets.push({
+              label: key,
+              data: dataObj.map(x => parseFloat(x[key]).toFixed(1)),
+              yAxesID: 'y-axes-0',
+              fill: false,
+              borderColor: colors[index],
+              backgroundColor: colors[index],
+              borderWidth: 1
+            })
+          }
+        })
+
+        return {
+          labels: dataObj.map(item => item[xAxesKey]),
+          datasets: datasets,
+          yAxes: []
+        }
+      }
+      // return empty for initialization befor data load
+      return {
+        labels: [],
+        datasets: [],
+        yAxes: yAxes
       }
     },
     /**
