@@ -68,7 +68,7 @@ export default Bar.extend({
         datasets: [{
           backgroundColor: this.settings.background || 'transparent',
           borderColor: this.settings.borderColor || '#000000',
-          borderWidth: this.settings.borderWidth || 0,
+          borderWidth: this.settings.borderWidth || 1,
           label: this.settings.yLabelName || '',
           data: this.settings.data
         }]
