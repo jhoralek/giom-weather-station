@@ -1,6 +1,7 @@
 <template>
     <section>
-        <b-table :data="isEmpty ? [] : data">
+        <b-table :data="isEmpty ? [] : data" :checked-rows.sync="checkedRows"
+                    checkable>
             <template scope="props">
                 <b-table-column field="id" label="ID" width="40" sortable numeric>
                     {{ props.row.id }}
@@ -16,7 +17,7 @@
                     {{ temp(props.row.systemp) }}
                 </b-table-column>
 
-                <b-table-column field="temperature" label="Teplota">
+                <b-table-column field="temperature" label="Teplota" sortable>
                     {{ temp(props.row.temperature) }}
                 </b-table-column>
 
@@ -74,7 +75,8 @@ export default {
     //     { 'id': 5, 'first_name': 'Anne', 'last_name': 'Lee', 'date': '2016-12-06 14:38:38', 'gender': 'Female' }
     // ]
     return {
-      isEmpty: false
+      isEmpty: false,
+      checkedRows: []
     }
   },
   methods: {
