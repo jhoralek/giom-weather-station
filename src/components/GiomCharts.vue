@@ -10,7 +10,9 @@
             <bar-chart chart-name="Průměrná měsíční teplota" yLabel="Teplota" xLabel="Měsíce" :chart-labels="avgLabels" :chart-data="avgData"></bar-chart>
         </li>
       </ul>
-      <data-table :data="tableData"></data-table>
+      <div class="weather__grid">
+        <data-table :data="tableData"></data-table>        
+      </div>
   </div>
 </template>
 
@@ -92,7 +94,7 @@ export default {
 </script>
 
 <style>
-
+/* 
 body {
   background-color: #333333;
 }
@@ -116,4 +118,10 @@ h3 {
     width: 35%;
     height: 35%;
 }
+
+.giom__charts_wrapper {
+  margin: 0 auto;
+} */
+
+
 </style>

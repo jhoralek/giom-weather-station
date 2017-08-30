@@ -1,31 +1,12 @@
 
 <script>
  import { Line } from 'vue-chartjs'
- import { Chart } from 'chart.js'
-
- const color = Chart.helpers.color
 
 export default Line.extend({
    name: 'lineChart',
    props: {
-     chartName: {
-       type: String,
-       default: ''
-     },
-     yLabel: {
-       type: String,
-       default: ''
-     },
-     xLabel: {
-       type: String,
-       default: ''
-     },
-     chartData: {
-       type: Array | Object,
-       required: false
-     },
-     chartLabels: {
-       type: Array,
+     settings: {
+       type: Object,
        required: true
      }
    },
@@ -35,13 +16,13 @@ export default Line.extend({
          responsive: true,
          title: {
            display: true,
-           text: this.chartName,
-           fontColor: '#ffffff'
+           text: this.settings.name || '',
+           fontColor: this.settings.fontColor || '#000000'
          },
          legend: {
            display: true,
            labels: {
-             fontColor: '#ffffff'
+             fontColor: this.settings.fontColor || '#000000'
            }
          },
          tooltips: {
@@ -57,26 +38,26 @@ export default Line.extend({
              display: true,
              scaleLabel: {
                display: true,
-               labelString: this.xLabel,
-               fontColor: '#ffffff'
+               labelString: this.settings.xLabelName || '',
+               fontColor: this.settings.fontColor || '#000000'
              },
              ticks: {
-               fontColor: '#ffffff'
+               fontColor: this.settings.fontColor || '#000000'
              }
            }],
            yAxes: [{
              display: true,
              scaleLabel: {
                display: true,
-               labelString: this.yLabel,
-               fontColor: '#ffffff'
+               labelString: this.settings.yLabelName || '',
+               fontColor: this.settings.fontColor || '#000000'
              },
              ticks: {
-               fontColor: '#ffffff',
+               fontColor: this.settings.fontColor || '#000000',
                min: 0,
                max: 35,
                stepSize: 5,
-               callback: function (value) { return value + ' C°' }
+               callback: this.settings.callback || function (val) { return val }
              }
            }]
          }
@@ -84,7 +65,7 @@ export default Line.extend({
      }
    },
    watch: {
-     chartLabels: function (val) {
+     settings: function (val) {
        this.render()
      }
    },
@@ -94,15 +75,15 @@ export default Line.extend({
    methods: {
      render () {
        this.renderChart({
-         labels: this.chartLabels,
+         labels: this.settings.labels,
          datasets: [{
-           label: this.yLabel,
-           borderColor: '#E5E164',
-           pointBackgroundColor: '#333333',
-           borderwidth: 0,
-           pointBordercolor: '#E5E164',
-           backgroundColor: color('#E5E164').alpha(0.3).rgbString(),
-           data: this.chartData
+           label: this.settings.yLabelName || '',
+           borderColor: this.settings.borderColor || '#000000',
+           pointBackgroundColor: this.settings.pointBackground || '#000000',
+           borderwidth: this.settings.borderWidth || 0,
+           pointBordercolor: this.settings.pointBorderColor || '#000000',
+           backgroundColor: this.settings.background || 'transparent',
+           data: this.settings.data
          }]
        }, this.options)
      }
