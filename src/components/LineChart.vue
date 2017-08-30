@@ -5,7 +5,7 @@
 export default Line.extend({
    name: 'lineChart',
    props: {
-     settings: {
+     ysettings: {
        type: Object,
        required: true
      }
@@ -16,13 +16,13 @@ export default Line.extend({
          responsive: true,
          title: {
            display: true,
-           text: this.settings.name || '',
-           fontColor: this.settings.fontColor || '#000000'
+           text: this.ysettings.name || '',
+           fontColor: this.ysettings.fontColor || '#000000'
          },
          legend: {
            display: true,
            labels: {
-             fontColor: this.settings.fontColor || '#000000'
+             fontColor: this.ysettings.fontColor || '#000000'
            }
          },
          tooltips: {
@@ -38,26 +38,26 @@ export default Line.extend({
              display: true,
              scaleLabel: {
                display: true,
-               labelString: this.settings.xLabelName || '',
-               fontColor: this.settings.fontColor || '#000000'
+               labelString: this.ysettings.xLabelName || '',
+               fontColor: this.ysettings.fontColor || '#000000'
              },
              ticks: {
-               fontColor: this.settings.fontColor || '#000000'
+               fontColor: this.ysettings.fontColor || '#000000'
              }
            }],
            yAxes: [{
              display: true,
              scaleLabel: {
                display: true,
-               labelString: this.settings.yLabelName || '',
-               fontColor: this.settings.fontColor || '#000000'
+               labelString: this.ysettings.yLabelName || '',
+               fontColor: this.ysettings.fontColor || '#000000'
              },
              ticks: {
-               fontColor: this.settings.fontColor || '#000000',
+               fontColor: this.ysettings.fontColor || '#000000',
                min: 0,
                max: 35,
                stepSize: 5,
-               callback: this.settings.callback || function (val) { return val }
+               callback: this.ysettings.callback || function (val) { return val }
              }
            }]
          }
@@ -65,7 +65,7 @@ export default Line.extend({
      }
    },
    watch: {
-     settings: function (val) {
+     ysettings: function (val) {
        this.render()
      }
    },
@@ -75,15 +75,15 @@ export default Line.extend({
    methods: {
      render () {
        this.renderChart({
-         labels: this.settings.labels,
+         labels: this.ysettings.labels,
          datasets: [{
-           label: this.settings.yLabelName || '',
-           borderColor: this.settings.borderColor || '#000000',
-           pointBackgroundColor: this.settings.pointBackground || '#000000',
-           borderwidth: this.settings.borderWidth || 0,
-           pointBordercolor: this.settings.pointBorderColor || '#000000',
-           backgroundColor: this.settings.background || 'transparent',
-           data: this.settings.data
+           label: this.ysettings.yLabelName || '',
+           borderColor: this.ysettings.borderColor || '#000000',
+           pointBackgroundColor: this.ysettings.pointBackground || '#000000',
+           borderwidth: this.ysettings.borderWidth || 0,
+           pointBordercolor: this.ysettings.pointBorderColor || '#000000',
+           backgroundColor: this.ysettings.background || 'transparent',
+           data: this.ysettings.data
          }]
        }, this.options)
      }

@@ -60,6 +60,7 @@
 <script>
 
 export default {
+  name: 'dataTable',
   props: {
     data: {
       type: Array,
