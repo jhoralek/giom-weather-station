@@ -2,27 +2,30 @@
   <div class="giom__charts_wrapper">
       <h1>GIOM 3000 meteostanice</h1>
       <h3>Stanoviště Bolinka u Vlašimi</h3>
-      <ul class="boxes">
-        <li class="box">
+      <ul class="chart__boxes">
+        <li class="chart__box">
             <line-chart chart-name="Denní teplota" yLabel="Teplota" xLabel="Čas" :chart-labels="labels" :chart-data="mdata"></line-chart>
         </li>
-        <li class="box">
+        <li class="chart__box">
             <bar-chart chart-name="Průměrná měsíční teplota" yLabel="Teplota" xLabel="Měsíce" :chart-labels="avgLabels" :chart-data="avgData"></bar-chart>
         </li>
-      </ul> 
+      </ul>
+      <data-table :data="tableData"></data-table>
   </div>
 </template>
 
 <script>
 import LineChart from './LineChart'
 import BarChart from './BarChart'
+import DataTable from './DataTable'
 import axios from 'axios'
 
 export default {
   name: 'giomCharts',
   components: {
     'lineChart': LineChart,
-    'barChart': BarChart
+    'barChart': BarChart,
+    'dataTable': DataTable
   },
   data () {
     return {
@@ -31,7 +34,8 @@ export default {
       humidity: [],
       timer: '',
       avgLabels: [],
-      avgData: []
+      avgData: [],
+      tableData: []
     }
   },
   // after component is created then execute
@@ -57,6 +61,9 @@ export default {
           this.mdata = filtered.map(item => {
             return item.temperature
           })
+
+          this.tableData = filtered
+          console.log(this.tableData)
         })
 
       // get average data for this months
@@ -73,9 +80,6 @@ export default {
            })
            return parseFloat(temperature).toFixed(2)
          })
-        //  this.avgData = response.data.map(item => {
-        //    return item.temperature
-        //  })
        })
     },
     cancelAutoUpdate: function () { clearInterval(this.timer) }
@@ -101,11 +105,11 @@ h3 {
   color: #ffffff;
 }
 
-.boxes {  
+.chart__boxes {  
   list-style-type: none;
 }
 
-.box {
+.chart__box {
   display: inline-block;
     margin-left: 25px;    
     margin-right: 25px;
