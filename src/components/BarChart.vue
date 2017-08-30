@@ -1,30 +1,11 @@
 <script>
 import { Bar } from 'vue-chartjs'
-import { Chart } from 'chart.js'
-
-const color = Chart.helpers.color
 
 export default Bar.extend({
   name: 'barChart',
   props: {
-    chartName: {
-      type: String,
-      default: ''
-    },
-    yLabel: {
-      type: String,
-      default: ''
-    },
-    xLabel: {
-      type: String,
-      default: ''
-    },
-    chartData: {
-      type: Array,
-      required: false
-    },
-    chartLabels: {
-      type: Array,
+    settings: {
+      type: Object,
       required: true
     }
   },
@@ -36,23 +17,23 @@ export default Bar.extend({
             ticks: {
               min: 0,
               max: 30,
-              callback: function (value) { return value + ' C°' },
-              fontColor: '#ffffff'
+              callback: this.settings.callback || function (val) { return val },
+              fontColor: this.settings.fontColor || '#000000'
             },
             scaleLabel: {
               display: true,
-              fontColor: '#ffffff',
-              labelString: this.yLabel
+              fontColor: this.settings.fontColor || '#000000',
+              labelString: this.settings.yLabelName || ''
             }
           }],
           xAxes: [{
             ticks: {
-              fontColor: '#ffffff'
+              fontColor: this.settings.fontColor || '#000000'
             },
             scaleLabel: {
               display: true,
-              fontColor: '#ffffff',
-              labelString: this.xLabel
+              fontColor: this.settings.fontColor || '#000000',
+              labelString: this.settings.xLabelName || ''
             },
             barPercentage: 1
           }]
@@ -61,13 +42,13 @@ export default Bar.extend({
         legend: {
           display: true,
           labels: {
-            fontColor: '#ffffff'
+            fontColor: this.settings.fontColor || '#000000'
           }
         },
         title: {
           display: true,
-          text: this.chartName,
-          fontColor: '#ffffff'
+          text: this.settings.name || '',
+          fontColor: this.settings.fontColor || '#000000'
         }
       }
     }
@@ -76,20 +57,20 @@ export default Bar.extend({
     this.render()
   },
   watch: {
-    chartLabels: function (val) {
+    settings: function (val) {
       this.render()
     }
   },
   methods: {
     render () {
       this.renderChart({
-        labels: this.chartLabels,
+        labels: this.settings.labels,
         datasets: [{
-          backgroundColor: color('#BAFFC9').alpha(0.3).rgbString(),
-          borderColor: '#BAFFC9',
-          borderWidth: 1,
-          label: this.yLabel,
-          data: this.chartData
+          backgroundColor: this.settings.background || 'transparent',
+          borderColor: this.settings.borderColor || '#000000',
+          borderWidth: this.settings.borderWidth || 0,
+          label: this.settings.yLabelName || '',
+          data: this.settings.data
         }]
       }, this.options)
     }
