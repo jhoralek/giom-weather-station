@@ -67,10 +67,11 @@ export default {
            return this.$moment.months(month - 1)
          })
          this.avgData = months.map(month => {
-           return response.data.map(item => {
+           let temperature = response.data.map(item => {
              let dataMonth = this.$moment('1-' + item.created, 'DD-MM-YYYY').month() + 1
              return month === dataMonth ? item.temperature : 0
            })
+           return parseFloat(temperature).toFixed(2)
          })
         //  this.avgData = response.data.map(item => {
         //    return item.temperature
