@@ -174,7 +174,7 @@ export default {
         })
 
         return {
-          labels: dataObj.map(item => item[xAxesKey]),
+          labels: dataObj.map(item => this.$moment(item[xAxesKey], 'DD-MM-YYYY').format('DD.MM.YYYY')),
           datasets: datasets,
           yAxes: []
         }

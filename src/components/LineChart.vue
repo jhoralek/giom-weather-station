@@ -54,8 +54,8 @@ export default Line.extend({
              },
              ticks: {
                fontColor: this.settings.fontColor || '#000000',
-               min: 0,
-               max: 35,
+               min: -20,
+               max: 40,
                stepSize: 5,
                callback: this.settings.callback || function (val) { return val }
              }
