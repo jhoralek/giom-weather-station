@@ -27,8 +27,8 @@ import axios from 'axios'
 import { Chart } from 'chart.js'
 
 const color = Chart.helpers.color
-const lineColor = '#ff9595'
-const barColor = '#00ff00'
+const lineColor = '#98ddde'
+const barColor = '#f7786b'
 
 export default {
   components: {
