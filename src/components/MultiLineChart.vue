@@ -1,0 +1,71 @@
+<script>
+import { Line } from 'vue-chartjs'
+
+export default Line.extend({
+  name: 'multilineChart',
+  props: {
+    settings: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      options: {
+        responsive: true,
+        hoverMode: 'index',
+        stacked: false,
+        title: {
+          display: true,
+          text: this.settings.name || '',
+          fontColor: this.settings.fontColor || '#000000'
+        },
+        legend: {
+          display: true,
+          labels: {
+            fontColor: this.settings.fontColor || '#000000'
+          }
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: this.settings.xLabelName || '',
+              fontColor: this.settings.fontColor || '#000000'
+            },
+            ticks: {
+              fontColor: this.settings.fontColor || '#000000'
+            }
+          }],
+          yAxes: this.settings.yAxes
+        }
+      }
+    }
+  },
+  watch: {
+    settings: function (val) {
+      this.render()
+    }
+  },
+  mounted () {
+    this.render()
+  },
+  methods: {
+    render () {
+      this.renderChart({
+        labels: this.settings.labels,
+        datasets: this.settings.datasets
+      }, this.options)
+    }
+  }
+})
+</script>
