@@ -5,11 +5,14 @@ import App from './App'
 import router from './router'
 import moment from 'moment'
 import VuewMomentJS from 'vue-momentjs'
+import Buefy from 'buefy'
+import 'buefy/lib/buefy.css'
 
 moment.locale('cs')
 
 Vue.config.productionTip = false
 Vue.use(VuewMomentJS, moment)
+Vue.use(Buefy)
 
 /* eslint-disable no-new */
 new Vue({
