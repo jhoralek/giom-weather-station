@@ -37,10 +37,10 @@
 </template>
 
 <script>
-import LineChart from './LineChart'
-import BarChart from './BarChart'
-import MultilineChart from './MultiLineChart'
-import DoughnutChart from './DoughnutChart'
+import LineChart from './charts/LineChart'
+import BarChart from './charts/BarChart'
+import MultilineChart from './charts/MultiLineChart'
+import DoughnutChart from './charts/DoughnutChart'
 
 import axios from 'axios'
 import { Chart } from 'chart.js'

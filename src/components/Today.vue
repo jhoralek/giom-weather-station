@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import DataTable from './DataTable'
+import DataTable from './datatables/DataTable'
 import axios from 'axios'
 
 export default {
