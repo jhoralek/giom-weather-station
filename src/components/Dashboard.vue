@@ -8,20 +8,30 @@
                   <line-chart :settings="dayTempSettings"></line-chart>
               </article>
             </div>
-            <div class="tile">
+            <!-- <div class="tile">
               <article class="tile is-child box is-11">
                 <p class="title">Průměrná teplota</p>
                 <p class="subtitle">Průměrná měsíční teplota za celý rok</p>
                 <bar-chart :settings="monthAvgSettings"></bar-chart>
               </article>
-            </div>
+            </div> -->
+            <div class="tile">
+              <article class="tile is-child box is-11">
+                  <p class="title">Aktuální teplota</p>
+                  <p class="subtitle">Poslední naměřená teplota</p>
+                  <div class="dounghnut_wrapper">
+                    <doughnut-chart :settings="currentTemperature"></doughnut-chart>
+                    <h1 class="doughnut_current_temp">{{ currentTemperature.currTemp }}</h1>
+                  </div>
+              </article>
+            </div>            
             <div class="tile">
               <article class="tile is-child box is-11">
                   <p class="title">Min, Max, Průměr</p>
                   <p class="subtitle">Minimální, maximální a průměrná denní teplota za měsíc</p>
                   <multiline-chart :settings="minMaxAvgSettings"></multiline-chart>
               </article>
-            </div>
+            </div>            
         </div>
     </div>
 </template>
@@ -30,6 +40,7 @@
 import LineChart from './LineChart'
 import BarChart from './BarChart'
 import MultilineChart from './MultiLineChart'
+import DoughnutChart from './DoughnutChart'
 
 import axios from 'axios'
 import { Chart } from 'chart.js'
@@ -43,20 +54,23 @@ export default {
   components: {
     'lineChart': LineChart,
     'barChart': BarChart,
-    'multilineChart': MultilineChart
+    'multilineChart': MultilineChart,
+    'doughnutChart': DoughnutChart
   },
   data () {
     return {
       timer: '',
       dayTempSettings: this.initSettings(lineColor),
       monthAvgSettings: this.initSettings(barColor),
-      minMaxAvgSettings: this.initMultiline([], '')
+      minMaxAvgSettings: this.initMultiline([], ''),
+      currentTemperature: this.initDoughnut('', 0, 50)
     }
   },
   created () {
     this.dayTemperatureData()
     this.monthAvgTemperatureData()
     this.maxMinAvgTemperatureData()
+    this.getCurrentTemperateure()
 
     this.timer = setInterval(this.requestData, 240000)
   },
@@ -65,6 +79,15 @@ export default {
   },
 
   methods: {
+    getCurrentTemperateure () {
+      axios.get('http://185.75.136.145:8888/?/current-temperature')
+        .then(response => {
+          this.currentTemperature = this.initDoughnut(
+            this.$moment(response.data.created).format('DD.MM.YYYY HH:mm'),
+            response.data.temperature,
+            50)
+        })
+    },
     maxMinAvgTemperatureData () {
       axios.get('http://185.75.136.145:8888/?/max-temperature/8')
       .then(response => {
@@ -134,6 +157,53 @@ export default {
       }
     },
 
+    initDoughnut (label, value, max) {
+      return {
+        currTemp: value + ' C°',
+        datasets: [{
+          data: [value, max - value],
+          backgroundColor: [ this.getDoughnutTempColor(value), 'white' ],
+          hoverBackgroundColor: [ this.getDoughnutTempColor(value), 'white' ],
+          borderWidth: 0
+        }],
+        labels: [label]
+      }
+    },
+
+    getDoughnutTempColor (temperature) {
+      let pColor = '#ffffff'
+
+      if (temperature > -30) {
+        pColor = 'violet'
+      }
+      if (temperature > -20) {
+        pColor = 'blue'
+      }
+      if (temperature > -10) {
+        pColor = 'teal'
+      }
+      if (temperature > 0) {
+        pColor = 'green'
+      }
+      if (temperature > 10) {
+        pColor = 'yellow'
+      }
+      if (temperature > 20) {
+        pColor = 'orange'
+      }
+      if (temperature > 30) {
+        pColor = 'red'
+      }
+      if (temperature > 35) {
+        pColor = 'magenta'
+      }
+      if (temperature > 40) {
+        pColor = 'purple'
+      }
+
+      return pColor
+    },
+
     initMultiline (dataObj, xAxesKey) {
       const fontColor = '#000000'
 
@@ -158,16 +228,16 @@ export default {
       if (dataObj.length > 0) {
         const datasets = []
         const firstRow = dataObj[0]
-        const colors = ['#ca535c', '#6A5A7F', '#6F5E55']
+        const colors = ['#ccffcc', '#ffaaff', '#6F5E55']
         Object.keys(firstRow).forEach(function (key, index) {
           if (key !== xAxesKey) {
             datasets.push({
               label: key,
               data: dataObj.map(x => parseFloat(x[key]).toFixed(1)),
-              yAxesID: 'y-axes-0',
-              fill: false,
+              yAxesID: 'y-axes-' + index,
+              fill: true,
               borderColor: colors[index],
-              backgroundColor: colors[index],
+              backgroundColor: color(colors[index]).alpha(0.1).rgbString(),
               borderWidth: 1
             })
           }
@@ -197,3 +267,18 @@ export default {
   }
 }
 </script>
+
+<<style>
+.doughnut_current_temp {
+  font-weight: 600;
+  font-size: 25pt;
+  position: absolute;
+  bottom: 70px;
+  left: 115px;
+}
+
+.dounghnut_wrapper {
+  position: relative;
+}
+
+</style>

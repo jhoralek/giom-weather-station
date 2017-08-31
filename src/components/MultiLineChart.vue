@@ -1,4 +1,6 @@
 <script>
+const baseColor = '#000000'
+
 import { Line } from 'vue-chartjs'
 
 export default Line.extend({
@@ -18,12 +20,12 @@ export default Line.extend({
         title: {
           display: true,
           text: this.settings.name || '',
-          fontColor: this.settings.fontColor || '#000000'
+          fontColor: this.settings.fontColor || baseColor
         },
         legend: {
           display: true,
           labels: {
-            fontColor: this.settings.fontColor || '#000000'
+            fontColor: this.settings.fontColor || baseColor
           }
         },
         tooltips: {
@@ -40,10 +42,10 @@ export default Line.extend({
             scaleLabel: {
               display: true,
               labelString: this.settings.xLabelName || '',
-              fontColor: this.settings.fontColor || '#000000'
+              fontColor: this.settings.fontColor || baseColor
             },
             ticks: {
-              fontColor: this.settings.fontColor || '#000000'
+              fontColor: this.settings.fontColor || baseColor
             }
           }],
           yAxes: this.settings.yAxes
