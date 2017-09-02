@@ -15,7 +15,10 @@ moment.locale('cs')
 
 Vue.config.productionTip = false
 Vue.use(VuewMomentJS, moment)
-Vue.use(Buefy)
+Vue.use(Buefy, {
+  defaultIconPack: 'fa',
+  defaultTooltipType: 'is-dark'
+})
 Vue.component('icon', Icon)
 
 /* eslint-disable no-new */
