@@ -12,10 +12,30 @@ export default Line.extend({
       required: true
     }
   },
-  data () {
-    return {
-      options: {
-        responsive: true,
+  watch: {
+    settings: function (val) {
+      this.render()
+    }
+  },
+  mounted () {
+    this.render()
+  },
+  methods: {
+    render () {
+      this.renderChart({
+        labels: this.settings.labels,
+        datasets: [{
+          label: this.settings.yLabelName || '',
+          borderColor: this.settings.borderColor || baseColor,
+          pointBackgroundColor: this.settings.pointBackground || baseColor,
+          borderwidth: this.settings.borderWidth || 0,
+          pointBordercolor: this.settings.pointBorderColor || baseColor,
+          backgroundColor: this.settings.background || 'transparent',
+          data: this.settings.data
+        }]
+      }, {
+        responsive: this.settings.responsive || true,
+        maintainAspectRatio: this.settings.aspectRation,
         title: {
           display: true,
           text: this.settings.name || '',
@@ -63,31 +83,7 @@ export default Line.extend({
             }
           }]
         }
-      }
-    }
-  },
-  watch: {
-    settings: function (val) {
-      this.render()
-    }
-  },
-  mounted () {
-    this.render()
-  },
-  methods: {
-    render () {
-      this.renderChart({
-        labels: this.settings.labels,
-        datasets: [{
-          label: this.settings.yLabelName || '',
-          borderColor: this.settings.borderColor || baseColor,
-          pointBackgroundColor: this.settings.pointBackground || baseColor,
-          borderwidth: this.settings.borderWidth || 0,
-          pointBordercolor: this.settings.pointBorderColor || baseColor,
-          backgroundColor: this.settings.background || 'transparent',
-          data: this.settings.data
-        }]
-      }, this.options)
+      })
     }
   }
 })

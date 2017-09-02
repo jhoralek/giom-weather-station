@@ -1,46 +1,15 @@
 <template>
     <div class="container">
         <div class="tile is-ancestor">
-            <div class="tile">
-              <article class="tile is-child box is-11">
-                  <p class="title">Denní teplota</p>
-                  <p class="subtitle">Teplotní křivka vývoje teploty po půl hodině</p>
-                  <line-chart :settings="dayTempSettings"></line-chart>
-              </article>
-            </div>
-            <!-- <div class="tile">
-              <article class="tile is-child box is-11">
-                <p class="title">Průměrná teplota</p>
-                <p class="subtitle">Průměrná měsíční teplota za celý rok</p>
-                <bar-chart :settings="monthAvgSettings"></bar-chart>
-              </article>
-            </div> -->
-            <div class="tile">
-              <article class="tile is-child box is-11">
-                  <p class="title">Aktuální teplota</p>
-                  <p class="subtitle">Poslední naměřená teplota</p>
-                  <div class="dounghnut_wrapper">
-                    <doughnut-chart :settings="currentTemperature"></doughnut-chart>
-                    <h1 class="doughnut_current_temp">{{ currentTemperature.currTemp }}</h1>
-                  </div>
-              </article>
-            </div>            
-            <div class="tile">
-              <article class="tile is-child box is-11">
-                  <p class="title">Min, Max, Průměr</p>
-                  <p class="subtitle">Minimální, maximální a průměrná denní teplota za měsíc</p>
-                  <multiline-chart :settings="minMaxAvgSettings"></multiline-chart>
-              </article>
-            </div>            
+            <dashboard-item :content="dayTempSettings"></dashboard-item>      
+            <dashboard-item :content="currentTemperature"></dashboard-item>
+            <dashboard-item :content="minMaxAvgSettings"></dashboard-item>            
         </div>
     </div>
 </template>
 
 <script>
-import LineChart from './charts/LineChart'
-import BarChart from './charts/BarChart'
-import MultilineChart from './charts/MultiLineChart'
-import DoughnutChart from './charts/DoughnutChart'
+import DashboardItem from './DashboardItem'
 
 import axios from 'axios'
 import { Chart } from 'chart.js'
@@ -52,10 +21,7 @@ const maxMinAvgXaxesKey = 'day'
 
 export default {
   components: {
-    'lineChart': LineChart,
-    'barChart': BarChart,
-    'multilineChart': MultilineChart,
-    'doughnutChart': DoughnutChart
+    'dashboardItem': DashboardItem
   },
   data () {
     return {
@@ -134,10 +100,10 @@ export default {
          })
          this.monthAvgSettings.data = months.map(month => {
            let temperature = response.data.map(item => {
-             let dataMonth = this.$moment('1-' + item.created, 'DD-MM-YYYY').month() + 1
-             return month === dataMonth ? item.temperature : 0
+             let dataMonth = this.$moment('1-' + item.month, 'DD-MM-YYYY').month() + 1
+             return month === dataMonth ? parseFloat(item.temperature) : 0
            })
-           return parseFloat(temperature).toFixed(2)
+           return temperature.reduce(function (sum, val) { return (sum + val).toFixed(1) })
          })
        })
     },
@@ -148,6 +114,11 @@ export default {
      */
     initSettings (pColor) {
       return {
+        type: 'lineChart',
+        title: 'Denní teplota',
+        subTitle: 'Teplotní křivka vývoje teploty po půl hodině',
+        showButton: true,
+        aspectRation: true,
         background: color(pColor).alpha(0.3).rgbString(),
         pointBackground: pColor,
         borderColor: pColor,
@@ -159,6 +130,11 @@ export default {
 
     initDoughnut (label, value, max) {
       return {
+        type: 'halfDoughnut',
+        title: 'Aktuální teplota',
+        subTitle: 'Poslední naměřená teplota',
+        showButton: false,
+        aspectRation: true,
         currTemp: value + ' C°',
         datasets: [{
           data: [value, max - value],
@@ -244,6 +220,11 @@ export default {
         })
 
         return {
+          type: 'multilineChart',
+          title: 'Min, Max, Průměr',
+          subTitle: 'Minimální, maximální a průměrná denní teplota za měsíc',
+          showButton: false,
+          aspectRation: true,
           labels: dataObj.map(item => this.$moment(item[xAxesKey], 'DD-MM-YYYY').format('DD.MM.YYYY')),
           datasets: datasets,
           yAxes: []
@@ -267,18 +248,3 @@ export default {
   }
 }
 </script>
-
-<<style>
-.doughnut_current_temp {
-  font-weight: 600;
-  font-size: 25pt;
-  position: absolute;
-  bottom: 70px;
-  left: 115px;
-}
-
-.dounghnut_wrapper {
-  position: relative;
-}
-
-</style>
