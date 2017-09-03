@@ -7,15 +7,19 @@
                     <line-chart :settings="data"></line-chart>
                 </div>
             </b-tab-item>
-            <b-tab-item label="Tabulka"></b-tab-item>
+            <b-tab-item label="Tabulka">
+              <data-table :data="dataTable"></data-table>
+            </b-tab-item>
     </b-tabs>
     </div>
 </template>
 
 <script>
 import LineChart from './charts/LineChart'
-import axios from 'axios'
+import DataTable from './datatables/DataTable'
 import { Chart } from 'chart.js'
+
+import axios from 'axios'
 
 const color = Chart.helpers.color
 const lineColor = '#98ddde'
@@ -23,7 +27,8 @@ const now = new Date()
 
 export default {
   components: {
-    'lineChart': LineChart
+    'lineChart': LineChart,
+    'dataTable': DataTable
   },
   data () {
     return {
@@ -31,7 +36,8 @@ export default {
       since: now,
       until: now,
       measuringTimePeriod: 5, // in minutes
-      data: this.initSettings(lineColor)
+      data: this.initSettings(lineColor),
+      dataTable: []
     }
   },
   created () {
@@ -39,20 +45,20 @@ export default {
   },
   methods: {
     getData () {
-      axios.get('http://185.75.136.145:8888/?/current-day')
+      axios.get(`http://185.75.136.145:8888/?/since/${this.queryDateFormat(this.since)}/until/${this.queryDateFormat(this.until)}`)
         .then(response => {
           this.data = this.initSettings(lineColor)
           // filter data only every 0 and 30 min. from hour
-          let filtered = response.data.filter(item => {
+          this.dataTable = response.data.filter(item => {
             let minutes = new Date(item.created).getMinutes()
             return minutes === 0 || minutes === 30
           })
           // labels with time
-          this.data.labels = filtered.map(item => {
+          this.data.labels = this.dataTable.map(item => {
             return item.created.substring(11, item.created.length - 3)
           })
           // temperature
-          this.data.data = filtered.map(item => {
+          this.data.data = this.dataTable.map(item => {
             return item.temperature
           })
           this.loading.close()
@@ -67,6 +73,7 @@ export default {
         borderColor: pColor,
         labels: [],
         data: [],
+        dataTable: [],
         callback: function (value) { return value + ' C°' }
       }
     },
@@ -83,6 +90,10 @@ export default {
 
     dateFormat (date) {
       return this.$moment(date).format('DD.MM.YYYY')
+    },
+
+    queryDateFormat (date) {
+      return this.$moment(date).format('YYYY-MM-DD')
     },
 
     measuringTimePeriodFormat () {
