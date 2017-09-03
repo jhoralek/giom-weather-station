@@ -55,7 +55,9 @@ export default {
         })
     },
     maxMinAvgTemperatureData () {
-      axios.get('http://185.75.136.145:8888/?/max-temperature/8')
+      const currentMonth = this.$moment(new Date()).month() + 1
+
+      axios.get(`http://185.75.136.145:8888/?/max-temperature/${currentMonth}`)
       .then(response => {
         this.minMaxAvgSettings = this.initMultiline(response.data, maxMinAvgXaxesKey)
       })
