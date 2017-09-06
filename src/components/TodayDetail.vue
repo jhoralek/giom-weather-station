@@ -33,7 +33,7 @@ export default {
   data () {
     return {
       loading: this.$loading.open(),
-      since: now,
+      since: new Date().setDate(new Date().getDate() - 7),
       until: now,
       measuringTimePeriod: 5, // in minutes
       data: this.initSettings(lineColor),
@@ -47,11 +47,12 @@ export default {
     getData () {
       axios.get(`http://185.75.136.145:8888/?/since/${this.queryDateFormat(this.since)}/until/${this.queryDateFormat(this.until)}`)
         .then(response => {
+          this.measuringTimePeriod = 60
           this.data = this.initSettings(lineColor)
-          // filter data only every 0 and 30 min. from hour
+          // filter data only every hour
           this.dataTable = response.data.filter(item => {
             let minutes = new Date(item.created).getMinutes()
-            return minutes === 0 || minutes === 30
+            return minutes === 0
           })
           // labels with time
           this.data.labels = this.dataTable.map(item => {
@@ -101,12 +102,12 @@ export default {
         return `po ${this.measuringTimePeriod} minutách`
       }
 
-      if (this.measuringTimePeriod > 60 && this.measuringTimePeriod < 1440) {
-        return `po ${this.$moment().minutes(this.measuringTimePeriod).format('HH:mm')} hodinách`
+      if (this.measuringTimePeriod >= 60 && this.measuringTimePeriod <= 1440) {
+        return `po ${this.$moment(new Date(2017, 1, 1, 0, 0, 0)).minutes(this.measuringTimePeriod).format('HH:mm')} hodinách`
       }
 
-      if (this.measuringTimePeriod > 1440) {
-        return `po ${this.$moment().minutes(this.measuringTimePeriod).format('DD')} dnech`
+      if (this.measuringTimePeriod >= 1440) {
+        return `po ${this.$moment(new Date(2017, 1, 1, 0, 0, 0)).minutes(this.measuringTimePeriod).format('DD')} dnech`
       }
     }
   }
