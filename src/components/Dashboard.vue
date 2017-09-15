@@ -227,7 +227,7 @@ export default {
           subTitle: 'Minimální, maximální a průměrná denní teplota za měsíc',
           showButton: false,
           aspectRation: true,
-          labels: dataObj.map(item => this.$moment(item[xAxesKey], 'DD-MM-YYYY').format('DD.MM.YYYY')),
+          labels: dataObj.map(item => this.$moment(item[xAxesKey], 'YYYY-MM-DD').format('DD.MM.YYYY')),
           datasets: datasets,
           yAxes: []
         }
