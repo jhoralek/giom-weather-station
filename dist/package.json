@@ -1,0 +1,11 @@
+{
+    "name": "meteo-stanice-vlasim",
+    "version": "1.0.0",
+    "description": "A Vue.js project to consume GIOM weather station data",
+    "author": "horalek.jiri@gmail.com",
+    "private": true,
+    "dependencies": {
+      "postinstall": "npm install express"
+     }
+}
+   
